@@ -1,0 +1,380 @@
+[
+  {
+    "title": "Algorithms",
+    "author": "Robert Sedgewick, Kevin Wayne",
+    "year": "2011",
+    "description": "A comprehensive introduction to algorithms and data structures, covering fundamental concepts with practical applications.",
+    "image": "algos.jpg"
+  },
+  {
+    "title": "ASP.NET in Action",
+    "author": "David S. Platt",
+    "year": "2007",
+    "description": "A practical guide to building dynamic web applications with ASP.NET, focusing on real-world scenarios and best practices.",
+    "image": "aspnet.jpg"
+  },
+  {
+    "title": "Async Rust",
+    "author": "Andrew K. Peterson",
+    "year": "2020",
+    "description": "A guide to writing asynchronous applications in Rust, focusing on concurrency and parallelism.",
+    "image": "asyncrust.jpg"
+  },
+  {
+    "title": "Amazon Web Services in Action",
+    "author": "Michael Wittig, Andreas Wittig",
+    "year": "2018",
+    "description": "A comprehensive guide to using Amazon Web Services (AWS) for cloud-based infrastructure and application development.",
+    "image": "aws.jpg"
+  },
+  {
+    "title": "The Cat's Guide to Programming",
+    "author": "Frank S. Chodorow",
+    "year": "2009",
+    "description": "A fun, introductory guide to programming for beginners, using cats as a metaphor to explain complex concepts.",
+    "image": "cats.jpg"
+  },
+  {
+    "title": "Clean Code: A Handbook of Agile Software Craftsmanship",
+    "author": "Robert C. Martin",
+    "year": "2008",
+    "description": "A guide to writing clean, maintainable, and scalable code, emphasizing best practices in software development.",
+    "image": "cleanCode.jpg"
+  },
+  {
+    "title": "The Clean Coder: A Code of Conduct for Professional Programmers",
+    "author": "Robert C. Martin",
+    "year": "2011",
+    "description": "A guide to the professional attitudes and behaviors that software developers need to cultivate to succeed in their careers.",
+    "image": "cleanCoder.jpg"
+  },
+  {
+    "title": "Clean Agile: Back to Basics",
+    "author": "Robert C. Martin",
+    "year": "2019",
+    "description": "A deep dive into Agile principles and practices, focusing on the importance of discipline and simplicity.",
+    "image": "cleanagile.jpg"
+  },
+  {
+    "title": "Clojure for the Brave and True",
+    "author": "Daniel Higginbotham",
+    "year": "2015",
+    "description": "An engaging and humorous introduction to the Clojure programming language, aimed at both beginners and experienced developers.",
+    "image": "clojure.jpg"
+  },
+  {
+    "title": "Cloud Security and Privacy",
+    "author": "Tim Mather, Subra Kumaraswamy, Shahed Latif",
+    "year": "2009",
+    "description": "A comprehensive guide to understanding the security and privacy concerns in cloud computing, and how to address them.",
+    "image": "cloudsecurity.jpg"
+  },
+  {
+    "title": "COBOL for the 21st Century",
+    "author": "Nancy B. Stern, Robert A. Stern",
+    "year": "2003",
+    "description": "An introduction to COBOL, focusing on its relevance and use in modern enterprise applications.",
+    "image": "cobol.jpg"
+  },
+  {
+    "title": "C Pointers and Memory Management",
+    "author": "Kenneth Reek",
+    "year": "2000",
+    "description": "A guide to understanding pointers in C programming and how to manage memory effectively in software applications.",
+    "image": "cpointers.jpg"
+  },
+  {
+    "title": "C++ Programming Language",
+    "author": "Bjarne Stroustrup",
+    "year": "2013",
+    "description": "The definitive reference on C++, written by the creator of the language, covering all aspects of C++ programming.",
+    "image": "cpp.jpg"
+  },
+  {
+    "title": "C++ Software Design",
+    "author": "Stephen C. Dewhurst",
+    "year": "1999",
+    "description": "A guide to designing software systems using C++, focusing on advanced techniques and principles of object-oriented design.",
+    "image": "cppsoftdesign.jpg"
+  },
+  {
+    "title": "CSS in Depth",
+    "author": "Keith J. Grant",
+    "year": "2019",
+    "description": "A comprehensive guide to mastering CSS, covering advanced techniques and best practices for modern web design.",
+    "image": "cssindepth.jpg"
+  },
+  {
+    "title": "Database Design for Mere Mortals",
+    "author": "Michael J. Hernandez",
+    "year": "2013",
+    "description": "An introduction to database design, focusing on the fundamentals of relational databases and how to structure data effectively.",
+    "image": "dbdesign.jpg"
+  },
+  {
+    "title": "DevOps: A Software Architect's Perspective",
+    "author": "Len Bass, Ingo Weber, Liming Zhu",
+    "year": "2015",
+    "description": "An exploration of the DevOps movement and its impact on software architecture, offering practical advice and case studies.",
+    "image": "devopsOR.jpg"
+  },
+  {
+    "title": "Django in Action",
+    "author": "Daniel Roy Greenfeld, Audrey Roy Greenfeld",
+    "year": "2018",
+    "description": "A practical guide to building dynamic web applications with Django, covering its core features and advanced techniques.",
+    "image": "djangoinaction.jpg"
+  },
+  {
+    "title": "Embedded Systems Design",
+    "author": "Peter Marwedel",
+    "year": "2011",
+    "description": "A comprehensive guide to the design of embedded systems, focusing on both hardware and software aspects.",
+    "image": "embedded.jpg"
+  },
+  {
+    "title": "Fluent C#",
+    "author": "Antonio Cisternino",
+    "year": "2013",
+    "description": "A guide to mastering C# programming, focusing on functional programming, LINQ, and other advanced C# features.",
+    "image": "fluentc.jpg"
+  },
+  {
+    "title": "Flutter for Beginners",
+    "author": "Alessandro Biessek",
+    "year": "2020",
+    "description": "A beginner-friendly guide to building mobile applications with the Flutter framework, covering both Dart programming and UI design.",
+    "image": "flutterdart.jpg"
+  },
+  {
+    "title": "Functional Programming in Java",
+    "author": "Venkat Subramaniam",
+    "year": "2018",
+    "description": "An introduction to functional programming principles, applying them to the Java programming language to improve code quality.",
+    "image": "fpjava.jpg"
+  },
+  {
+    "title": "Unity 3D Game Development by Example",
+    "author": "Ryan Henson Creighton",
+    "year": "2014",
+    "description": "A hands-on guide to building games with Unity 3D, using examples to demonstrate various game development techniques.",
+    "image": "gamesunity.jpg"
+  },
+  {
+    "title": "Git Pocket Guide",
+    "author": "Richard E. Silverman",
+    "year": "2013",
+    "description": "A compact guide to Git, covering essential commands and workflows for effective version control.",
+    "image": "gitpocket.jpg"
+  },
+  {
+    "title": "Head First Go",
+    "author": "Jay McGavren",
+    "year": "2019",
+    "description": "A learner-friendly introduction to the Go programming language, using engaging visuals and examples.",
+    "image": "goHF.jpg"
+  },
+  {
+    "title": "Grokking Artificial Intelligence Algorithms",
+    "author": "Rishal Hurbans",
+    "year": "2020",
+    "description": "An accessible guide to understanding and implementing AI algorithms, with practical examples.",
+    "image": "grokAI.jpg"
+  },
+  {
+    "title": "Kubernetes: Up and Running",
+    "author": "Kelsey Hightower, Brendan Burns, Joe Beda",
+    "year": "2017",
+    "description": "A comprehensive guide to Kubernetes, explaining how to deploy, manage, and scale containerized applications.",
+    "image": "k8s.jpg"
+  },
+  {
+    "title": "Kafka: The Definitive Guide",
+    "author": "Neha Narkhede, Gwen Shapira, Todd Palino",
+    "year": "2017",
+    "description": "An in-depth look at Apache Kafka, covering its architecture, use cases, and best practices.",
+    "image": "kafkaconnect.jpg"
+  },
+  {
+    "title": "Kali Linux Revealed",
+    "author": "Raphael Hertzog, Jim O'Gorman, Mati Aharoni",
+    "year": "2017",
+    "description": "A comprehensive guide to Kali Linux, focusing on penetration testing and security assessments.",
+    "image": "kalilinux.jpg"
+  },
+  {
+    "title": "Kanban: Successful Evolutionary Change for Your Technology Business",
+    "author": "David J. Anderson",
+    "year": "2010",
+    "description": "An introduction to Kanban, providing strategies for improving processes and efficiency in technology businesses.",
+    "image": "kanban.jpg"
+  },
+  {
+    "title": "Laravel: Up & Running",
+    "author": "Matt Stauffer",
+    "year": "2016",
+    "description": "A practical guide to the Laravel PHP framework, covering its features and how to build applications with it.",
+    "image": "laravel.jpg"
+  },
+  {
+    "title": "Lean DevOps: A Practical Guide to On-Demand Service Delivery",
+    "author": "Robert Benefield",
+    "year": "2020",
+    "description": "A guide to integrating Lean principles with DevOps practices for efficient service delivery.",
+    "image": "leandevops.jpg"
+  },
+  {
+    "title": "Machine Learning Yearning",
+    "author": "Andrew Ng",
+    "year": "2018",
+    "description": "A guide to structuring machine learning projects, offering insights into the practical aspects of building AI systems.",
+    "image": "machlearnr.jpg"
+  },
+  {
+    "title": "Building Microservices: Designing Fine-Grained Systems",
+    "author": "Sam Newman",
+    "year": "2015",
+    "description": "An exploration of microservices architecture, discussing its benefits, challenges, and best practices.",
+    "image": "microservices.jpg"
+  },
+  {
+    "title": "Node.js Design Patterns",
+    "author": "Mario Casciaro, Luciano Mammino",
+    "year": "2014",
+    "description": "A deep dive into design patterns and best practices for building scalable Node.js applications.",
+    "image": "nodeexpress.jpg"
+  },
+  {
+    "title": "Game Physics Engine Development",
+    "author": "Ian Millington",
+    "year": "2007",
+    "description": "A guide to developing physics engines for games, covering the mathematical and computational principles involved.",
+    "image": "phisicsgamedev.jpg"
+  },
+  {
+    "title": "Head First Python",
+    "author": "Paul Barry",
+    "year": "2010",
+    "description": "An engaging introduction to Python programming, using the Head First series' visual and interactive approach.",
+    "image": "pythonHF.jpg"
+  },
+  {
+    "title": "Head First JavaScript Programming",
+    "author": "Eric Freeman, Elisabeth Robson",
+    "year": "2014",
+    "description": "A learner-friendly guide to JavaScript, using the Head First series' unique teaching methodology.",
+    "image": "jsHF.jpg"
+  },
+  {
+    "title": "Head First Java",
+    "author": "Kathy Sierra, Bert Bates",
+    "year": "2005",
+    "description": "An interactive and engaging introduction to Java programming, part of the Head First series.",
+    "image": "javaHF.jpg"
+  },
+  {
+    "title": "Head First Kotlin",
+    "author": "Dawn Griffiths, David Griffiths",
+    "year": "2019",
+    "description": "A beginner-friendly guide to Kotlin programming, using the Head First series' visual approach.",
+    "image": "javakotlin.jpg"
+  },
+  {
+    "title": "Learning React: Functional Web Development with React and Redux",
+    "author": "Alex Banks, Eve Porcello",
+    "year": "2017",
+    "description": "An introduction to building web applications with React and Redux, focusing on functional programming concepts.",
+    "image": "react.jpg"
+  },
+  {
+    "title": "React: Up & Running",
+    "author": "Stoyan Stefanov",
+    "year": "2016",
+    "description": "A practical guide to getting started with React, covering its core concepts and application development.",
+    "image": "reactindepth.jpg"
+  },
+  {
+    "title": "RESTful Web APIs",
+    "author": "Leonard Richardson, Mike Amundsen, Sam Ruby",
+    "year": "2013",
+    "description": "A comprehensive guide to designing RESTful web APIs, covering principles, patterns, and best practices.",
+    "image": "restful.jpg"
+  },
+  {
+    "title": "Robust Python",
+    "author": "Patrick Viafore",
+    "year": "2021",
+    "description": "A guide to writing reliable and maintainable Python code, focusing on best practices and design patterns.",
+    "image": "robustpython.jpg"
+  },
+  {
+    "title": "The Ruby Programming Language",
+    "author": "David Flanagan, Yukihiro Matsumoto",
+    "year": "2008",
+    "description": "An authoritative guide to Ruby, written by the language's creator, Yukihiro Matsumoto.",
+    "image": "ruby.jpg"
+  },
+  {
+    "title": "Rust Programming by Example",
+    "author": "Guillaume Gomez, Antoni Boucher",
+    "year": "2018",
+    "description": "A practical guide to learning Rust by building real-world projects and applications.",
+    "image": "rust.jpg"
+  },
+  {
+    "title": "Scala for the Impatient",
+    "author": "Cay S. Horstmann",
+    "year": "2012",
+    "description": "A quick-start guide to Scala for developers familiar with Java, covering its key features and syntax.",
+    "image": "scala.jpg"
+  },
+  {
+    "title": "The Linux Command Line: A Complete Introduction",
+    "author": "William E. Shotts Jr.",
+    "year": "2012",
+    "description": "A thorough introduction to the Linux command line, covering shell scripting and command-line utilities.",
+    "image": "shell.jpg"
+  },
+  {
+    "title": "Smalltalk Best Practice Patterns",
+    "author": "Kent Beck",
+    "year": "1996",
+    "description": "A collection of best practices and patterns for Smalltalk programming, emphasizing simplicity and effectiveness.",
+    "image": "smalltalk.jpg"
+  },
+  {
+    "title": "Security Engineering: A Guide to Building Dependable Distributed Systems",
+    "author": "Ross J. Anderson",
+    "year": "2020",
+    "description": "An in-depth guide to security engineering, focusing on building dependable and secure distributed systems.",
+    "image": "softSecur.jpg"
+  },
+  {
+    "title": "SQL Cookbook: Query Solutions and Techniques for Database Developers",
+    "author": "Anthony Molinaro",
+    "year": "2005",
+    "description": "A collection of practical solutions to common SQL challenges, providing techniques for efficient database querying.",
+    "image": "sqlcook.jpg"
+  },
+  {
+    "title": "Think Java: How to Think Like a Computer Scientist",
+    "author": "Allen B. Downey, Chris Mayfield",
+    "year": "2012",
+    "description": "An introduction to programming with Java, emphasizing problem-solving and computational thinking.",
+    "image": "thinkjava.jpg"
+  },
+  {
+    "title": "JUnit in Action",
+    "author": "Vincent Massol, Ted Husted",
+    "year": "2003",
+    "description": "A guide to writing and running unit tests with JUnit, covering best practices and strategies for test-driven development.",
+    "image": "unittesting.jpg"
+  },
+  {
+    "title": "Vue.js Up and Running",
+    "author": "Callum Macrae",
+    "year": "2018",
+    "description": "An introduction to building web applications with Vue.js, covering its core features and best practices.",
+    "image": "vue.jpg"
+  }
+]

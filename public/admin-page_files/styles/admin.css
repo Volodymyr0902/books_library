@@ -1,0 +1,11 @@
+table tbody tr {
+    height: 5em;
+}
+
+table tbody tr td {
+    height: 5em;
+}
+
+.img-preview {
+    height: 3em;
+}

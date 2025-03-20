@@ -1,0 +1,20 @@
+<header>
+    <nav class="navbar bg-body-tertiary">
+        <div class="container d-flex justify-content-around">
+            <a href="/admin/api/v1" class="navbar-brand"><b>Open Library</b> | Admin</a>
+            <form action="/admin/api/v1" method="GET" id="search-form" class="d-flex" role="search">
+                <div class="position-relative d-flex justify-content-between">
+                    <div class="btn btn-outline-secondary dropdown-toggle me-2" data-bs-toggle="dropdown"></div>
+                    <input class="form-control me-2" type="search" name="search" placeholder="Title" aria-label="Search">
+                    <fieldset class="dropdown-menu position-absolute p-3 bg-light w-100">
+                        <h5 class="m-2">Filters:</h5>
+                        <input type="search" name="author" id="author" class="form-control m-2" placeholder="Author">
+                        <input type="search" name="year" id="year" class="form-control m-2" placeholder="Year">
+                    </fieldset>
+                    <button class="btn btn-outline-success" type="submit">Search</button>
+                </div>
+            </form>
+            <a id="logout" class="link-secondary text-decoration-none icon-link-hover">Log out</a>
+        </div>
+    </nav>
+</header>

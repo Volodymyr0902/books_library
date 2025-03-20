@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Books library</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="library Sh++">
+
+    <link rel="stylesheet" href="/public/common/styles/libs.min.css">
+    <link rel="stylesheet" href="/public/common/styles/style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" crossorigin="anonymous"/>
+    <link rel="shortcut icon" href="/public/common/favicons/lib.ico" type="image/x-icon">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+</head>
+
+<body data-gr-c-s-loaded="true">
+    <%- include("./partials/books-header.ejs")%>
+    <section id="main" class="main-wrapper">
+        <div class="container">
+            <div class="stat-label">
+                <h4>
+                    <% if (search) {%>
+                        Search results for: "<%= search%>"
+                    <% }%>
+                </h4>
+                <h4>
+                    <% if (books.length !== 0) {%>
+                        Shown books: <%= `${offset * 20 + 1}-${offset * 20 + books.length}`%> out of <%= total%>
+                    <% } else {%>
+                        No books found :(
+                    <% }%>
+                </h4>
+            </div>
+
+            <div id="content" class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <% for (const book of books) {%>
+                <div data-book-id="<%= book.id%>" class="book_item col-xs-6 col-sm-4 col-md-3 col-lg-3">
+                    <div class="book">
+                        <a href="http://localhost:8080/api/v1/books/<%= book.id%>">
+                            <img src="/public/common/images/<%= book.id%>.jpg" alt="<%= book.title%>">
+                            <div data-title="<%= book.title%>" class="blockI" style="height: 46px;">
+                                <div data-book-title="<%= book.title%>" class="title size_text"><%= book.title%></div>
+                                <div data-book-author="<%= book.author_id%>" class="author"><%= book.name%></div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <% }%>
+            </div>
+        </div>
+
+        <div class="page-nav">
+            <% if (offset > 0) {%>
+                <div class="page-prev"><a>Back</a></div>
+            <% }%>
+            <% if (offset < pages) {%>
+                <div class="page-next"><a>Next</a></div>
+            <% }%>
+        </div>
+    </section>
+    <%- include("./partials/books-footer.ejs")%>
+    <script src="/public/books-page_files/scripts/books.js"></script>
+</body>
+
+</html>
