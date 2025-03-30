@@ -188,6 +188,7 @@ html, body {
   .main-wrapper #pattern {
     display: none; }
   .main-wrapper .book_item .book {
+    height: 100%;
     text-align: center;
     padding: 20px 10px; }
     .main-wrapper .book_item .book:hover {
@@ -197,6 +198,8 @@ html, body {
       .main-wrapper .book_item .book a img {
         width: auto;
         height: 128px;
+        display: inline-block;
+        object-fit: cover;
         cursor: pointer; }
       .main-wrapper .book_item .book a .blockI {
         position: relative; }

@@ -10,37 +10,29 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.BooksModel = void 0;
-const DBHandler_1 = require("../services/db/DBHandler");
+const DBHandler_1 = require("../utils/db/DBHandler");
 class BooksModel {
-    static getBookTotalNum(search, author, year) {
-        return __awaiter(this, void 0, void 0, function* () {
-            search = '%' + search + '%';
-            author = '%' + author + '%';
-            year = '%' + year + '%';
-            const searchQuery = `SELECT COUNT(books.id) as total
-                             FROM books
-                             INNER JOIN authors ON books.author_id = authors.id
-                             WHERE lower(title) LIKE ?
-                             AND lower(name) LIKE ?
-                             AND year LIKE ?`;
-            const [result] = yield DBHandler_1.DBHandler.instance().pool.query(searchQuery, [search, author, year]);
-            return result[0].total;
-        });
-    }
     static getBooksPreview(offset, search, author, year, limit) {
         return __awaiter(this, void 0, void 0, function* () {
             search = '%' + search + '%';
             author = '%' + author + '%';
             year = '%' + year + '%';
-            const searchQuery = `SELECT books.id as id, title, name
+            const searchQuery = `SELECT
+                                 books.id AS id,
+                                 title,
+                                 GROUP_CONCAT(DISTINCT authors.name SEPARATOR ', ') AS name,
+                                 COUNT(*) OVER() as total
                              FROM books
-                             LEFT JOIN authors ON books.author_id = authors.id
-                             WHERE lower(title) LIKE ?
-                             AND (lower(name) LIKE ? OR lower(name) IS NULL)
+                             LEFT JOIN books_authors ON books.id = books_authors.book_id
+                             LEFT JOIN authors ON authors.id = books_authors.author_id OR books.author_id = authors.id
+                             WHERE LOWER(title) LIKE ?
                              AND year LIKE ?
-                             ORDER BY timestamp
+                             AND deleted_at IS NULL
+                             GROUP BY books.id, title, timestamp
+                             HAVING MAX(LOWER(name) LIKE ?) > 0
+                             ORDER BY MAX(timestamp) DESC
                              LIMIT ?, ?`;
-            const [books] = yield DBHandler_1.DBHandler.instance().pool.query(searchQuery, [search, author, year, offset * limit, limit]);
+            const [books] = yield DBHandler_1.DBHandler.instance().pool.query(searchQuery, [search, year, author, offset * limit, limit]);
             return books;
         });
     }
@@ -49,43 +41,44 @@ class BooksModel {
             search = '%' + search + '%';
             author = '%' + author + '%';
             year = '%' + year + '%';
-            const searchQuery = `SELECT books.id as id, title, name, year, clicks
+            const searchQuery = `SELECT
+                                 books.id AS id,
+                                 title,
+                                 GROUP_CONCAT(DISTINCT authors.name SEPARATOR ', ') AS name,
+                                 year,
+                                 clicks,
+                                 COUNT(*) OVER() as total
                              FROM books
-                             LEFT JOIN authors ON books.author_id = authors.id
-                             WHERE lower(title) LIKE ?
-                             AND (lower(name) LIKE ? OR lower(name) IS NULL)
-                             AND year LIKE ?
-                             ORDER BY timestamp
+                                      LEFT JOIN books_authors ON books.id = books_authors.book_id
+                                      LEFT JOIN authors ON authors.id = books_authors.author_id OR books.author_id = authors.id
+                             WHERE LOWER(title) LIKE ?
+                               AND year LIKE ?
+                               AND deleted_at IS NULL
+                             GROUP BY books.id, title, timestamp
+                             HAVING MAX(LOWER(name) LIKE ?) > 0
+                             ORDER BY MAX(timestamp) DESC
                              LIMIT ?, ?`;
-            const [books] = yield DBHandler_1.DBHandler.instance().pool.query(searchQuery, [search, author, year, offset * limit, limit]);
+            const [books] = yield DBHandler_1.DBHandler.instance().pool.query(searchQuery, [search, year, author, offset * limit, limit]);
             return books;
         });
     }
     static getSingleBook(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            const searchQuery = `SELECT books.id AS id, title, year, pages, isbn, description, name
+            const searchQuery = `SELECT
+                                 books.id AS id,
+                                 title,
+                                 GROUP_CONCAT(DISTINCT authors.name SEPARATOR ', ') AS name,
+                                 year,
+                                 pages,
+                                 isbn,
+                                 description
                              FROM books
-                             LEFT JOIN authors ON books.author_id = authors.id
-                             WHERE books.id = ?`;
+                                      LEFT JOIN books_authors ON books.id = books_authors.book_id
+                                      LEFT JOIN authors ON authors.id = books_authors.author_id OR books.author_id = authors.id
+                             WHERE books.id = ?
+                             GROUP BY books.id, title, timestamp`;
             const [books] = yield DBHandler_1.DBHandler.instance().pool.query(searchQuery, [id]);
             return books[0];
-        });
-    }
-    static addAuthorIdsToBook(book) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const query = `SELECT JSON_UNQUOTE(authors_ids) as authors FROM books_authors WHERE book_id = ?`;
-            const authorsIds = (yield DBHandler_1.DBHandler.instance().pool.query(query, [book.id]))[0][0]["authors"];
-            book.name = authorsIds.replace(/["\[\]]/g, "").split(", ");
-            return book;
-        });
-    }
-    static convertAuthorIdsToNames(book) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const [author1, author2, author3] = book.name;
-            const query = `SELECT name FROM authors WHERE id IN (?, ?, ?)`;
-            const [authorNames] = (yield DBHandler_1.DBHandler.instance().pool.query(query, [author1, author2, author3]));
-            book.name = authorNames.map(author => author.name).join(", ");
-            return book;
         });
     }
     static getStats(id, statCol) {
@@ -102,8 +95,7 @@ class BooksModel {
             const updQuery = `UPDATE books
                           SET ${statCol} = ${statCol} + 1
                           WHERE books.id = ?`;
-            const [updRes] = yield DBHandler_1.DBHandler.instance().pool.query(updQuery, [id]);
-            return updRes.affectedRows === 1;
+            yield DBHandler_1.DBHandler.instance().pool.query(updQuery, [id]);
         });
     }
 }

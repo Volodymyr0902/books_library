@@ -1,8 +1,8 @@
 import {NextFunction, Request, Response} from "express";
 import {v4} from "uuid";
 import {AdminModel} from "../models/admin.model";
-import {DBHandler} from "../services/db/DBHandler";
-import {ResultSetHeader} from "mysql2";
+import {matchedData} from "express-validator";
+import {HTTPError} from "../utils/error-handler/HTTPError";
 
 export class AdminController {
     static generateID(req: Request, res: Response, next: NextFunction) {
@@ -22,79 +22,62 @@ export class AdminController {
         res.status(401).end()
     }
 
-    static async proxyOnAuthors(req: Request, res: Response) {
-        if ("new-author-2" in req.body || "new-author-3" in req.body) {
-            await AdminController.addBookManyAuthors(req, res)
-            return
-        }
+    static async addBook(req: Request, res: Response, next: NextFunction) {
+        try {
+            const {
+                "new-title": title,
+                "new-year": year,
+                "new-author-1": author1,
+                "new-author-2": author2,
+                "new-author-3": author3,
+                description
+            } = matchedData(req);
 
-        await AdminController.addBook(req, res)
-    }
+            const authors: string[] = [author1, author2, author3].filter(Boolean)
+            const authorsIds: string[] = []
 
-    static async addBook(req: Request, res: Response) {
-        const {"new-title": title, "new-year": year, "new-author-1": author, description} = req.body;
-        let authorID: string;
+            for (const author of authors) {
+                const existAuthorId = await AdminModel.getAuthorIdByName(author);
 
-        const existAuthorId = await AdminModel.getAuthorIdByName(author);
-
-        if (existAuthorId) {
-            authorID = existAuthorId
-        } else {
-            authorID = v4()
-            if (!(await AdminModel.addAuthor(authorID, author))) {
-                res.status(500).json({err: "Failed to insert an author"});
-                return
-            }
-        }
-
-        if (!(await AdminModel.addBook(req.newBookID!, title, authorID, year, 444, "12-34-567", description))) {
-            res.status(500).json({err: "Failed to insert a book"});
-        }
-
-        res.redirect(req.originalUrl)
-    }
-
-    static async addBookManyAuthors(req: Request, res: Response) {
-        const {
-            "new-title": title,
-            "new-year": year,
-            "new-author-1": author1,
-            "new-author-2": author2,
-            "new-author-3": author3,
-            description
-        } = req.body;
-
-        const authors = [author1, author2, author3].filter(Boolean)
-        const authorsIds: string[] = []
-
-        for (const author of authors) {
-            const existAuthorId = await AdminModel.getAuthorIdByName(author);
-
-            if (existAuthorId) {
-                authorsIds.push(existAuthorId)
-            } else {
-                authorsIds.push(v4())
-                if (!(await AdminModel.addAuthor(authorsIds[authorsIds.length - 1], author))) {
-                    res.status(500).json({err: "Failed to insert an author"});
-                    return
+                if (existAuthorId) {
+                    authorsIds.push(existAuthorId)
+                } else {
+                    authorsIds.push(v4())
+                    await AdminModel.addAuthor(authorsIds[authorsIds.length - 1], author)
                 }
             }
+
+            if (authors.length === 1) {
+                await AdminModel.addBook(req.newBookID!, title, authorsIds[0], year, 444, "12-34-567", description)
+            } else {
+                await AdminModel.addBook(req.newBookID!, title, null, year, 444, "12-34-567", description)
+                for (const id of authorsIds) {
+                    await AdminModel.addRelation(req.newBookID!, id)
+                }
+            }
+
+            res.redirect(req.originalUrl)
+        } catch (e) {
+            if (e instanceof Error) {
+                next(new HTTPError(500, e.message))
+            } else {
+                next(new HTTPError(500, "Unknown error occurred."))
+            }
         }
-
-        await AdminModel.addBook(req.newBookID!, title, null, year, 444, "12-34-567", description)
-        await AdminModel.addRelation(req.newBookID!, authorsIds)
-
-        res.redirect(req.originalUrl)
     }
 
-    static async deleteBook(req: Request, res: Response) {
-        const {id} = req.params;
+    static async deleteBook(req: Request, res: Response, next: NextFunction) {
+        try {
+            const {id} = matchedData(req);
 
-        if (await AdminModel.deleteBook(id)) {
-            res.json({ok: true});
-            return
+            await AdminModel.setBookDeletionTime(id)
+            res.json({status: "success"});
+        } catch (e) {
+            if (e instanceof Error) {
+                next(new HTTPError(500, e.message))
+            } else {
+                next(new HTTPError(500, "Unknown error occurred."))
+            }
         }
-
-        res.status(404).json({ok: false});
     }
 }

@@ -55,11 +55,11 @@
                     <li id="page-prev" class="page-item"><a class="page-link link-success"><%= offset%></a></li>
                     <% }%>
                     <li id="page-curr" class="page-item"><a class="page-link bg-success active"><%= offset + 1%></a></li>
-                    <% if (offset < pages) {%>
+                    <% if (offset < pages - 1) {%>
                     <li id="page-next" class="page-item"><a class="page-link link-success"><%= offset + 2%></a></li>
                     <% }%>
                     <li id="page-last" class="page-item">
-                        <a class="page-link link-success <% if (offset === pages || pages <= 0) {%> disabled <% }%>" aria-label="Last">
+                        <a class="page-link link-success <% if (offset >= pages - 1 || pages <= 0) {%> disabled <% }%>" aria-label="Last">
                             <span aria-hidden="true">&raquo;</span>
                         </a>
                     </li>
@@ -68,7 +68,7 @@
         </div>
 
         <div class="w-50 ms-5 shadow-sm p-3">
-            <form action="" method="POST" enctype="multipart/form-data">
+            <form action="" method="POST" enctype="multipart/form-data" class="h-100 d-flex flex-column justify-content-between">
                 <h3 class="lead">Add new book</h3>
                 <div class="form-group d-flex flex-row justify-content-between">
                     <div class="d-flex flex-column justify-content-between me-4">
@@ -86,7 +86,7 @@
                     <img class="img-fluid img-thumbnail w-50" src="" alt="New book image">
                 </figure>
                 <textarea class="form-control mb-2" id="new-desc" name="description" placeholder="More about this book..." rows="5" style="resize:none"></textarea>
-                <div class="d-flex flex-row justify-content-between">
+                <div class="d-flex flex-row justify-content-between align-items-center">
                     <button type="submit" class="btn btn-success mt-2">Add Book</button>
                     <span class="p-2 text-black-50">* leave missing authors empty</span>
                 </div>

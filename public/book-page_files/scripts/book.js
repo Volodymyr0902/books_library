@@ -2,7 +2,7 @@ $(document).ready(async function () {
         const options = {
             method: 'POST',
             headers: {"Content-Type": "application/json"},
-            body: JSON.stringify({action: "view"})
+            body: JSON.stringify({action: "views"})
         }
 
         await fetch(window.location.href, options)
@@ -13,7 +13,7 @@ $('.btnBookID').click(async function () {
         const options = {
             method: 'POST',
             headers: {"Content-Type": "application/json"},
-            body: JSON.stringify({action: "click"})
+            body: JSON.stringify({action: "clicks"})
         }
 
         const res = await fetch(window.location.href, options)

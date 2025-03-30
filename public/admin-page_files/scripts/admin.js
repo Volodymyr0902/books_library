@@ -12,7 +12,7 @@ $(document).ready(async function () {
         const delResponse = await fetch("/admin/api/v1/" + e.target.dataset.id, {method: "DELETE"})
         const delResult = await delResponse.json();
 
-        if (delResult.ok) {
+        if (delResult.status === "success") {
             $(this).parent().parent().remove();
         } else {
             alert("Failed to delete book")
@@ -48,7 +48,7 @@ $(document).ready(async function () {
     queryParams.set("offset", '0')
     $("#page-first a").attr("href", window.location.origin + window.location.pathname + "?" + queryParams)
 
-    queryParams.set("offset", pages)
+    queryParams.set("offset", String(pages - 1))
     $("#page-last a").attr("href", window.location.origin + window.location.pathname + "?" + queryParams)
 
     //-----DISPLAY-BODY----//

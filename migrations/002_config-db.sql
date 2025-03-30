@@ -17,6 +17,7 @@ CREATE TABLE IF NOT EXISTS books (
     description VARCHAR(256),
     views INT DEFAULT 0,
     clicks INT DEFAULT 0,
+    deleted_at DATETIME DEFAULT null,
     timestamp DATETIME DEFAULT now(),
     FOREIGN KEY (author_id) REFERENCES authors(id) ON DELETE SET NULL
 );

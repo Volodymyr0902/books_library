@@ -1,89 +1,84 @@
-import {DBHandler} from "../services/db/DBHandler";
-import {IAuthorName, IAuthorId, IBook, IBookComplete, ISingleBook, IStats} from "../interfaces/interfaces";
-import {ResultSetHeader, RowDataPacket} from "mysql2";
+import {DBHandler} from "../utils/db/DBHandler";
+import {IBook, IBookComplete, ISingleBook, IStats} from "../interfaces/interfaces";
+import {ResultSetHeader} from "mysql2";
 
 export class BooksModel {
-    static async getBookTotalNum(search: string, author: string, year: string): Promise<number> {
+    static async getBooksPreview(offset: number,
+                                 search: string, author: string, year: string, limit: number): Promise<IBook[]> {
         search = '%' + search + '%'
         author = '%' + author + '%'
         year = '%' + year + '%'
 
-        const searchQuery = `SELECT COUNT(books.id) as total
+        const searchQuery = `SELECT
+                                 books.id AS id,
+                                 title,
+                                 GROUP_CONCAT(DISTINCT authors.name SEPARATOR ', ') AS name,
+                                 COUNT(*) OVER() as total
                              FROM books
-                             INNER JOIN authors ON books.author_id = authors.id
-                             WHERE lower(title) LIKE ?
-                             AND lower(name) LIKE ?
-                             AND year LIKE ?`;
-        const [result] = await DBHandler.instance().pool.query<RowDataPacket[]>(searchQuery, [search, author, year]);
-
-        return result[0].total
-    }
-
-    static async getBooksPreview(offset: number, search: string, author: string, year: string, limit: number): Promise<IBook[]> {
-        search = '%' + search + '%'
-        author = '%' + author + '%'
-        year = '%' + year + '%'
-
-        const searchQuery = `SELECT books.id as id, title, name
-                             FROM books
-                             LEFT JOIN authors ON books.author_id = authors.id
-                             WHERE lower(title) LIKE ?
-                             AND (lower(name) LIKE ? OR lower(name) IS NULL)
+                             LEFT JOIN books_authors ON books.id = books_authors.book_id
+                             LEFT JOIN authors ON authors.id = books_authors.author_id OR books.author_id = authors.id
+                             WHERE LOWER(title) LIKE ?
                              AND year LIKE ?
-                             ORDER BY timestamp
+                             AND deleted_at IS NULL
+                             GROUP BY books.id, title, timestamp
+                             HAVING MAX(LOWER(name) LIKE ?) > 0
+                             ORDER BY MAX(timestamp) DESC
                              LIMIT ?, ?`
         const [books] = await DBHandler.instance().pool.query<IBook[]>(searchQuery,
-            [search, author, year, offset * limit, limit])
+            [search, year, author, offset * limit, limit])
 
         return books;
     }
 
-    static async getBooksComplete(offset: number, search: string, author: string, year: string, limit: number): Promise<IBookComplete[]> {
+    static async getBooksComplete(offset: number,
+                                  search: string,
+                                  author: string,
+                                  year: string,
+                                  limit: number): Promise<IBookComplete[]> {
         search = '%' + search + '%'
         author = '%' + author + '%'
         year = '%' + year + '%'
 
-        const searchQuery = `SELECT books.id as id, title, name, year, clicks
+        const searchQuery = `SELECT
+                                 books.id AS id,
+                                 title,
+                                 GROUP_CONCAT(DISTINCT authors.name SEPARATOR ', ') AS name,
+                                 year,
+                                 clicks,
+                                 COUNT(*) OVER() as total
                              FROM books
-                             LEFT JOIN authors ON books.author_id = authors.id
-                             WHERE lower(title) LIKE ?
-                             AND (lower(name) LIKE ? OR lower(name) IS NULL)
-                             AND year LIKE ?
-                             ORDER BY timestamp
+                                      LEFT JOIN books_authors ON books.id = books_authors.book_id
+                                      LEFT JOIN authors ON authors.id = books_authors.author_id OR books.author_id = authors.id
+                             WHERE LOWER(title) LIKE ?
+                               AND year LIKE ?
+                               AND deleted_at IS NULL
+                             GROUP BY books.id, title, timestamp
+                             HAVING MAX(LOWER(name) LIKE ?) > 0
+                             ORDER BY MAX(timestamp) DESC
                              LIMIT ?, ?`
         const [books] = await DBHandler.instance().pool.query<IBookComplete[]>(searchQuery,
-            [search, author, year, offset * limit, limit])
+            [search, year, author, offset * limit, limit])
 
         return books;
     }
 
-    static async getSingleBook(id: string): Promise<ISingleBook>{
-        const searchQuery = `SELECT books.id AS id, title, year, pages, isbn, description, name
+    static async getSingleBook(id: string): Promise<ISingleBook> {
+        const searchQuery = `SELECT
+                                 books.id AS id,
+                                 title,
+                                 GROUP_CONCAT(DISTINCT authors.name SEPARATOR ', ') AS name,
+                                 year,
+                                 pages,
+                                 isbn,
+                                 description
                              FROM books
-                             LEFT JOIN authors ON books.author_id = authors.id
-                             WHERE books.id = ?`
+                                      LEFT JOIN books_authors ON books.id = books_authors.book_id
+                                      LEFT JOIN authors ON authors.id = books_authors.author_id OR books.author_id = authors.id
+                             WHERE books.id = ?
+                             GROUP BY books.id, title, timestamp`
         const [books] = await DBHandler.instance().pool.query<ISingleBook[]>(searchQuery, [id])
 
         return books[0]
-    }
-
-    static async addAuthorIdsToBook(book: IBook) {
-        const query = `SELECT JSON_UNQUOTE(authors_ids) as authors FROM books_authors WHERE book_id = ?`;
-        const authorsIds: string = (await DBHandler.instance().pool.query<IAuthorId[]>(query, [book.id]))[0][0]["authors"];
-        book.name = authorsIds.replace(/["\[\]]/g, "").split(", ");
-
-
-        return book;
-    }
-
-    static async convertAuthorIdsToNames(book: IBook) {
-        const [author1, author2, author3] = book.name;
-        const query = `SELECT name FROM authors WHERE id IN (?, ?, ?)`;
-
-        const [authorNames] = (await DBHandler.instance().pool.query<IAuthorName[]>(query, [author1, author2, author3]));
-        book.name = authorNames.map(author => author.name).join(", ");
-
-        return book;
     }
 
     static async getStats(id: string, statCol: string) {
@@ -99,8 +94,6 @@ export class BooksModel {
         const updQuery = `UPDATE books
                           SET ${statCol} = ${statCol} + 1
                           WHERE books.id = ?`
-        const [updRes] = await DBHandler.instance().pool.query<ResultSetHeader>(updQuery, [id])
-
-        return updRes.affectedRows === 1;
+        await DBHandler.instance().pool.query<ResultSetHeader>(updQuery, [id])
     }
 }

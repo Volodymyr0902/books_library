@@ -5,6 +5,7 @@ export interface IBook extends RowDataPacket {
     title: string,
     year: number,
     name: string | string[],
+    total: number,
 }
 
 export interface IBookComplete extends RowDataPacket, IBook {
@@ -23,8 +24,4 @@ export type IStats = RowDataPacket & {
 
 export interface IAuthorId extends RowDataPacket {
     id: string,
-}
-
-export interface IAuthorName extends RowDataPacket {
-    name: string,
 }

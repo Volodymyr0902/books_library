@@ -10,47 +10,80 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AdminModel = void 0;
-const DBHandler_1 = require("../services/db/DBHandler");
+const DBHandler_1 = require("../utils/db/DBHandler");
+const HTTPError_1 = require("../utils/error-handler/HTTPError");
 class AdminModel {
     static getAuthorIdByName(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            const selectAuthorSQL = `SELECT id
+            try {
+                const selectAuthorSQL = `SELECT id
                                  FROM authors
                                  WHERE name = ?`;
-            const [authorRes] = yield DBHandler_1.DBHandler.instance().pool.query(selectAuthorSQL, [id]);
-            return authorRes[0] ? authorRes[0].id : null;
+                const [authorRes] = yield DBHandler_1.DBHandler.instance().pool.query(selectAuthorSQL, [id]);
+                return authorRes[0] ? authorRes[0].id : null;
+            }
+            catch (e) {
+                throw new HTTPError_1.HTTPError(500, "Internal Server Error");
+            }
         });
     }
     static addAuthor(authorID, author) {
         return __awaiter(this, void 0, void 0, function* () {
-            const insertAuthorSQL = `INSERT INTO authors
+            try {
+                const insertAuthorSQL = `INSERT INTO authors
                                  VALUES (?, ?)`;
-            const [insertAuthorRes] = yield DBHandler_1.DBHandler.instance().pool.query(insertAuthorSQL, [authorID, author]);
-            return insertAuthorRes.affectedRows === 1;
+                yield DBHandler_1.DBHandler.instance().pool.query(insertAuthorSQL, [authorID, author]);
+            }
+            catch (e) {
+                throw new HTTPError_1.HTTPError(500, "Failed to add new author");
+            }
         });
     }
     static addBook(bookID, title, authorID, year, pages, isbn, description) {
         return __awaiter(this, void 0, void 0, function* () {
-            const insertBookSQL = `INSERT INTO books (id, title, author_id, year, pages, isbn, description)
+            try {
+                const insertBookSQL = `INSERT INTO books (id, title, author_id, year, pages, isbn, description)
                                VALUES (?, ?, ?, ?, ?, ?, ?)`;
-            const [insertBookRes] = yield DBHandler_1.DBHandler.instance().pool.query(insertBookSQL, [bookID, title, authorID, year, pages, isbn, description]);
-            return insertBookRes.affectedRows === 1;
+                yield DBHandler_1.DBHandler.instance().pool.query(insertBookSQL, [bookID, title, authorID, year, pages, isbn, description]);
+            }
+            catch (e) {
+                throw new HTTPError_1.HTTPError(500, "Failed to add new book");
+            }
         });
     }
-    static addRelation(bookID, authorsIds) {
+    static addRelation(bookID, authorID) {
         return __awaiter(this, void 0, void 0, function* () {
-            const addRelationSQL = `INSERT INTO books_authors VALUES (?, ?)`;
-            const [addRelationRes] = yield DBHandler_1.DBHandler.instance().pool.query(addRelationSQL, [bookID, JSON.stringify(authorsIds)]);
-            return addRelationRes.affectedRows === 1;
+            try {
+                const addRelationSQL = `INSERT INTO books_authors VALUES (?, ?)`;
+                yield DBHandler_1.DBHandler.instance().pool.query(addRelationSQL, [bookID, authorID]);
+            }
+            catch (e) {
+                throw new HTTPError_1.HTTPError(500, "Internal Server Error");
+            }
         });
     }
-    static deleteBook(id) {
+    static setBookDeletionTime(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            const sql = `DELETE
+            try {
+                const sql = `UPDATE books SET deleted_at = ? WHERE id = ?`;
+                yield DBHandler_1.DBHandler.instance().pool.query(sql, [new Date(), id]);
+            }
+            catch (e) {
+                throw new HTTPError_1.HTTPError(500, "Failed to delete the book");
+            }
+        });
+    }
+    static deleteMarkedBooks() {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const sql = `DELETE
                      FROM books
-                     WHERE id = ?`;
-            const [result] = yield DBHandler_1.DBHandler.instance().pool.query(sql, [id]);
-            return result.affectedRows === 1;
+                     WHERE deleted_at IS NOT NULL`;
+                yield DBHandler_1.DBHandler.instance().pool.query(sql);
+            }
+            catch (e) {
+                throw new HTTPError_1.HTTPError(500, "Failed to perform soft deletion");
+            }
         });
     }
 }

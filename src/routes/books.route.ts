@@ -1,12 +1,13 @@
 import express from 'express'
 import {BooksController} from "../controllers/books.controller";
+import {Validator} from "../utils/validators/Validator";
 
 const router = express.Router()
 
-router.get('/', BooksController.getBooks)
+router.get('/', Validator.validateGetBooks, Validator.validate, BooksController.getBooks)
 
 router.route("/books/:id")
-    .get(BooksController.getSingleBook)
-    .post(BooksController.incrementStats)
+    .get(Validator.validateGetSingleBook, Validator.validate, BooksController.getSingleBook)
+    .post(Validator.validateIncrementStats, Validator.validate, BooksController.incrementStats)
 
 export default router
